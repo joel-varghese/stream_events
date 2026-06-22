@@ -1,0 +1,19 @@
+# Python virtual environments
+kafka/venv/
+kafka/.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Next.js / Node
+# streamify/node_modules/
+streamify/.next/
+
+# Environment variables
+.env
+.env.local
+
+# OS files
+.DS_Store
+Thumbs.db
