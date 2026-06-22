@@ -7,7 +7,7 @@ __pycache__/
 *.pyc
 
 # Next.js / Node
-# streamify/node_modules/
+streamify/node_modules/
 streamify/.next/
 
 # Environment variables
