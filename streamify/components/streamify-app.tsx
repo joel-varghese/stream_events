@@ -8,7 +8,7 @@ import {
 } from "@/lib/events";
 import { BellIcon } from "./bell-icon";
 import { supabase } from "@/lib/supabase";
-import { RealtimePostgresInsertPayload } from "supabase/supabase-js";
+import { RealtimePostgresInsertPayload } from "@supabase/supabase-js";
 
 const EVENT_BUTTONS: {
   type: EventType;
@@ -100,7 +100,7 @@ export function StreamifyApp() {
           id: crypto.randomUUID(),
           type,
           message: `Failed to emit ${EVENT_LABELS[type].toLowerCase()} event`,
-          createdAt: new Date().toISOString(),
+          created_at: new Date().toISOString(),
         },
         ...current,
       ]);
@@ -160,9 +160,9 @@ export function StreamifyApp() {
                           </div>
                           <time
                             className="shrink-0 text-xs text-zinc-400"
-                            dateTime={notification.createdAt}
+                            dateTime={notification.created_at}
                           >
-                            {formatTime(notification.createdAt)}
+                            {formatTime(notification.created_at)}
                           </time>
                         </div>
                       </li>

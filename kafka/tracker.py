@@ -1,11 +1,16 @@
 from confluent_kafka import Consumer
 from supabase import create_client
+from dotenv import load_dotenv
 import os
 import json
 
+load_dotenv()
+
 SUPABASE_URL = os.environ.get("SUPABASE_URL")
 SUPABASE_KEY = os.environ.get("SUPABASE_SERVICE_KEY")
+# remove after confirming
 
+supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 consumer_config = {
     "bootstrap.servers": "localhost:9092",
@@ -21,7 +26,7 @@ print("Listening on all topics . . . ")
 
 try:
     while True:
-        msg = consumer.poll(1,0)
+        msg = consumer.poll(1.0)
         if msg is None:
             continue
         if msg.error():
@@ -37,7 +42,7 @@ try:
             "id": event["id"],
             "type": event["type"],
             "message": event["message"],
-            "created_at": event["createdAt"]
+            "created_at": event["created_at"]
         }).execute()
 
         print(f"Inserted into DB: {event['id']}")

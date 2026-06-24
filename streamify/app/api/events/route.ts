@@ -25,7 +25,7 @@ export async function POST(request: Request) {
     id: crypto.randomUUID(),
     type,
     message: getEventMessage(type),
-    createdAt: new Date().toISOString(),
+    created_at: new Date().toISOString(),
   };
 
   await publishers[type](event);

@@ -4,7 +4,7 @@ export type Notification = {
   id: string;
   type: EventType;
   message: string;
-  createdAt: string;
+  created_at: string;
 };
 
 export const EVENT_LABELS: Record<EventType, string> = {
