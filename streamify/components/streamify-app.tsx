@@ -7,6 +7,8 @@ import {
   type Notification,
 } from "@/lib/events";
 import { BellIcon } from "./bell-icon";
+import { supabase } from "@/lib/supabase";
+import { RealtimePostgresInsertPayload } from "supabase/supabase-js";
 
 const EVENT_BUTTONS: {
   type: EventType;
@@ -59,6 +61,25 @@ export function StreamifyApp() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    const channel = supabase
+      .channel("notifications")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "notifications" },
+        (payload: RealtimePostgresInsertPayload<Notification>) => {
+          const notification = payload.new as Notification;
+          setNotifications((current) => [notification, ...current]);
+          setPanelOpen(true);
+        }
+      )
+      .subscribe();
+
+      return () => {
+        supabase.removeChannel(channel);
+      }
+  }, []);
+
   async function triggerEvent(type: EventType) {
     setPending(type);
 
@@ -73,9 +94,6 @@ export function StreamifyApp() {
         throw new Error("Failed to emit event");
       }
 
-      const notification: Notification = await response.json();
-      setNotifications((current) => [notification, ...current]);
-      setPanelOpen(true);
     } catch {
       setNotifications((current) => [
         {
